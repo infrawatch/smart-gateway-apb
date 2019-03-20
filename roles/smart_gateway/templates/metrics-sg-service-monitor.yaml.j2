@@ -1,16 +1,16 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: metrics-consumer-{{ item.name }}
+  name: metrics-smart-gateway-{{ sg_label }}
   labels:
-    sa-telemetry-app-{{ item.name }}: metrics-consumer-{{ item.name }}
+    sa-telemetry-app-{{ sg_label }}: metrics-smart-gateway-{{ sg_label }}
 spec:
   selector:
     matchLabels:
-      sa-telemetry-app: metrics-consumer-{{ item.name }}
+      sa-telemetry-app: metrics-smart-gateway-{{ sg_label }}
   namespaceSelector:
     matchNames:
-    - {{ sa_telemetry_consumers_namespace }}
+    - {{ namespace }}
   endpoints:
   - port: metrics
     interval: {{ sa_telemetry_consumers_default_interval }}

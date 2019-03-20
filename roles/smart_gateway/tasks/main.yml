@@ -1,7 +1,39 @@
 ---
-- include_tasks: build_consumers.yml
-  loop:
-    - metrics
-    - events
-  loop_control:
-    loop_var: consumer_type
+- name: ConfigMap for {{ sg_type }} smart gateway
+  k8s:
+    name: "{{ sg_type }}-config-{{ sg_label }}"
+    namespace: "{{ namespace }}"
+    state: "{{ state }}"
+    definition: "{{ lookup('template', '{{ sg_type }}-sg-configmap.yaml.j2') }}"
+
+- name: DeploymentConfig for {{ sg_type }} smart gateway
+  k8s:
+    name: "{{ sg_type }}"-smart-gateway-{{ sg_label }}
+    namespace: "{{ namespace }}"
+    state: "{{ state }}"
+    definition: "{{ lookup('template', '{{ sg_type }}-sg-deployment.yaml.j2') }}"
+
+- name: Service for {{ sg_type }} smart gateway
+  k8s:
+    name: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+    namespace: "{{ namespace }}"
+    state: "{{ state }}"
+    labels:
+      sa-telemetry-app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+      app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+      node: "{{ sg_label }}"
+    ports:
+    - name: "{{ sg_type }}"
+      port: 8081
+      targetPort: 8081
+      protocol: TCP
+    selector:
+      sa-telemetry-app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+
+- name: ServiceMonitor for {{ sg_type }} smart gateway
+  k8s:
+    name: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+    namespace: "{{ namespace }}"
+    state: "{{ state }}"
+    definition: "{{ lookup('template', '{{ sg_type }}-sg-service-monitor.yaml.j2') }}"
+  when: sg_type == "metrics"

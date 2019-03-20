@@ -1,6 +1,6 @@
-DOCKERHOST = DOCKERHOST
-DOCKERORG = DOCKERORG
-IMAGENAME = smart-gateway
+DOCKERHOST = quay.io
+DOCKERORG = redhat-service-assurance
+IMAGENAME = smart-gateway-apb
 TAG = latest
 USER=$(shell id -u)
 PWD=$(shell pwd)

@@ -1,18 +1,18 @@
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  name: events-consumer-{{ item.name }}
+  name: events-smart-gateway-{{ sg_label }}
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        sa-telemetry-app: events-consumer-{{ item.name }}
+        sa-telemetry-app: events-smart-gateway-{{ sg_label }}
     spec:
       securityContext:
         nonroot: true
       containers:
-      - name: metrics-consumer
+      - name: metrics-smart-gateway
         image: {{ sa_telemetry_consumers_container_image }}:{{ sa_telemetry_consumers_container_version }}
         volumeMounts:
         - name: events-config
@@ -33,7 +33,7 @@ spec:
       volumes:
       - name: events-config
         configMap:
-          name: events-config-{{ item.name }}
+          name: events-config-{{ sg_label }}
       nodeSelector:
-        node: {{ item.name }}
+        node: {{ sg_label }}
         application: sa-telemetry

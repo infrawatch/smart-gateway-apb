@@ -12,4 +12,17 @@ plans:
     free: True
     metadata:
         displayName: Default
-    parameters: []
+    parameters:
+        - name: sg_type
+          title: Type of Smart Gateway to deploy
+          type: enum
+          enum: ['metrics', 'events']
+          default: metrics
+          required: true
+        - name: sg_label
+          title: Unique label for Smart Gateway
+          type: string
+          display_type: text
+          default: "blue"
+          required: true
+
