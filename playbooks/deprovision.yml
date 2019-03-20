@@ -1,0 +1,8 @@
+- name: sa-smart-gateway playbook to deprovision the application
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    apb_action: deprovision
+  roles:
+  - role: sa-smart-gateway

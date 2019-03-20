@@ -1,0 +1,15 @@
+version: 1.0
+name: smart-gateway-apb
+description: Smart Gateway for providing metrics and events from an AMQP 1.x bus
+bindable: False
+async: optional
+metadata:
+  displayName: Smart Gateway (APB)
+  providerDisplayName: "Red Hat, Inc."
+plans:
+  - name: default
+    description: This default plan deploys the Smart Gateway
+    free: True
+    metadata:
+        displayName: Default
+    parameters: []
