@@ -4,6 +4,22 @@
   connection: local
   vars:
     apb_action: provision
+    kubeconfig: "{{ lookup('env', 'HOME') }}/.kube/config"
+  module_defaults:
+    k8s:
+      kubeconfig: "{{ kubeconfig }}"
 
   tasks:
-  - include_role: smart_gateway
+    - debug:
+        var: cluster
+
+    - name: Login to openshift
+      command: "oc login -u {{ oc_login_username }}  -p {{ oc_login_password }}"
+      when: cluster == "openshift"
+            and oc_login_username is defined
+            and oc_login_password is defined
+
+    - include_role:
+        name: smart_gateway
+      vars:
+        state: present

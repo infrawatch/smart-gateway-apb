@@ -8,32 +8,43 @@
 
 - name: DeploymentConfig for {{ sg_type }} smart gateway
   k8s:
-    name: "{{ sg_type }}"-smart-gateway-{{ sg_label }}
+    name: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
     namespace: "{{ namespace }}"
     state: "{{ state }}"
     definition: "{{ lookup('template', '{{ sg_type }}-sg-deployment.yaml.j2') }}"
 
 - name: Service for {{ sg_type }} smart gateway
   k8s:
-    name: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
-    namespace: "{{ namespace }}"
     state: "{{ state }}"
-    labels:
-      sa-telemetry-app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
-      app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
-      node: "{{ sg_label }}"
-    ports:
-    - name: "{{ sg_type }}"
-      port: 8081
-      targetPort: 8081
-      protocol: TCP
-    selector:
-      sa-telemetry-app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+        namespace: "{{ namespace }}"
+        labels:
+          sa-telemetry-app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+          app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+          node: "{{ sg_label }}"
+      spec:
+        ports:
+        - name: "{{ sg_type }}"
+          port: 8081
+          targetPort: 8081
+          protocol: TCP
+        selector:
+          sa-telemetry-app: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
+
+- name: Get the config
+  command: cat {{ lookup('env', 'HOME') }}/.kube/config
+  register: kubeconfig_contents
 
 - name: ServiceMonitor for {{ sg_type }} smart gateway
   k8s:
     name: "{{ sg_type }}-smart-gateway-{{ sg_label }}"
     namespace: "{{ namespace }}"
     state: "{{ state }}"
-    definition: "{{ lookup('template', '{{ sg_type }}-sg-service-monitor.yaml.j2') }}"
+    definition: "{{ lookup('template', '{{ sg_type }}-sg-service-monitor.yaml.j2') | from_yaml }}"
   when: sg_type == "metrics"
+  register: servicemonitor_contents
+  ignore_errors: true

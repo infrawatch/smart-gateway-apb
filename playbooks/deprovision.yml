@@ -4,5 +4,9 @@
   connection: local
   vars:
     apb_action: deprovision
-  roles:
-  - role: sa-smart-gateway
+
+  tasks:
+    - include_role:
+        name: smart_gateway
+      vars:
+        state: absent

@@ -1,5 +1,5 @@
-DOCKERHOST = quay.io
-DOCKERORG = redhat-service-assurance
+DOCKERHOST = docker.io
+DOCKERORG = nfvpe
 IMAGENAME = smart-gateway-apb
 TAG = latest
 USER=$(shell id -u)

@@ -1,0 +1,14 @@
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: smart-gateway-apb
+  namespace: sa-telemetry
+spec:
+  clusterServiceClassExternalName: localregistry-smart-gateway-apb
+  clusterServicePlanExternalName: default
+  parameters:
+      oc_login_username: admin
+      oc_login_password: admin
+      sg_type: metrics
+      sg_label: white

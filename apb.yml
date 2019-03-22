@@ -1,10 +1,10 @@
 version: 1.0
 name: smart-gateway-apb
-description: Smart Gateway for providing metrics and events from an AMQP 1.x bus
+description: "Smart Gateway for providing metrics and events from an AMQP 1.x bus"
 bindable: False
 async: optional
 metadata:
-  displayName: Smart Gateway (APB)
+  displayName: "Smart Gateway (APB)"
   providerDisplayName: "Red Hat, Inc."
 plans:
   - name: default
@@ -13,6 +13,17 @@ plans:
     metadata:
         displayName: Default
     parameters:
+        - name: oc_login_username
+          type: string
+          title: OpenShift administration login username
+          required: true
+          display_group: OpenShift Credentials
+        - name: oc_login_password
+          type: string
+          title: OpenShift administration login password
+          display_type: password
+          required: true
+          display_group: OpenShift Credentials
         - name: sg_type
           title: Type of Smart Gateway to deploy
           type: enum
@@ -23,6 +34,5 @@ plans:
           title: Unique label for Smart Gateway
           type: string
           display_type: text
-          default: "blue"
+          default: "white"
           required: true
-
