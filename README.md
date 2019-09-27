@@ -5,6 +5,10 @@ The Smart Gateway is a golang application that connects to an AMQP 1.x message
 bus (Apache QPID Dispatch Router) and provides a metrics scrape endpoint for
 Prometheus, or writes events into ElasticSearch.
 
+> **WARNING**
+> 
+> No longer in use or developed. See https://github.com/redhat-service-assurance/smart-gateway-operator
+
 APB Variables
 --------------
 
